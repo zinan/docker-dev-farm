@@ -1,0 +1,105 @@
+version: "2"
+services:
+
+  php72:
+    build: php7.2
+    container_name: php72
+    volumes:
+      - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
+
+  php71:
+    build: php7.1
+    container_name: php71
+    volumes:
+      - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
+
+  php56:
+    build: php5.6
+    container_name: php56
+    volumes:
+      - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
+
+  nginx:
+    build: nginx
+    container_name: nginx
+    environment:
+      - DEFAULT_PROJECTS_FOLDER= ${DEFAULT_PROJECTS_FOLDER}
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./log/:/var/log/nginx
+    volumes_from:
+      - php72
+      - php71
+      - php56
+    links:
+      - php72:php72
+      - php71:php71
+      - php56:php56
+    ports:
+      - ${DEFAULT_NGINX_PORT}:80
+
+  mysql:
+    build: mysql
+    command: --default-authentication-plugin=mysql_native_password --innodb-use-native-aio=0
+    container_name: mysql
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${GLOBAL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${GLOBAL_PASSWORD}
+    ports:
+      - ${DEFAULT_MYSQL_PORT}:3306
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      - MONGO_DATA_DIR=/var/lib/mongodb
+      - MONGO_LOG_DIR=/var/log/mongodb
+    volumes:
+      - ./data/mongo/mongodb:/var/lib/mongodb
+      - ./data/mongo/logs/mongodb:/var/log/mongodb
+      - ./data/mongo/data/db:/data/db
+    ports:
+      - ${DEFAULT_MONGO_PORT}:27017
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    environment:
+      - REDIS_DEFAULT_PASSWORD=${GLOBAL_PASSWORD}
+      - MASTER_DEFAULT_PASSWORD=${GLOBAL_PASSWORD}
+    ports:
+      - ${DEFAULT_REDIS_PORT}:6379
+
+  redis-commander:
+    container_name: rediscommander
+    build: rediscommander
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=${GLOBAL_PASSWORD}
+    ports:
+      - ${DEFAULT_RCOMMANDER_PORT}:80
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - ${DEFAULT_MYADMIN_PORT}:80
+    links:
+      - mysql
+    depends_on:
+      - mysql
+#    environment:
+#      PMA_HOST: mysql
+
+  nodejs:
+    build: nodejs
+    container_name: nodejs
+    ports:
+      - ${DEFAULT_NODEJS_PORT}:3000
+    volumes:
+      - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html

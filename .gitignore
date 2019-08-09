@@ -1,0 +1,6 @@
+.idea
+data/*
+log/*
+.env
+COMMANDS
+nginx/conf.d/*.conf

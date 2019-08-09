@@ -1,0 +1,7 @@
+language: bash
+services: docker
+
+script:
+  - ./install.sh
+  - docker-compose up -d
+  - timeout 60 bash -c 'until $(curl -Isf -o /dev/null http://localhost:8080); do printf '.'; sleep 0.5; done'
