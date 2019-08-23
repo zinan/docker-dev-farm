@@ -1,5 +1,5 @@
 FROM node:8
-
+LABEL maintainer="Sinan Turgut <mail@sinanturgut.com.tr>"
 WORKDIR /usr/src/app
 
 RUN git clone https://github.com/onuragtas/redis-commander.git

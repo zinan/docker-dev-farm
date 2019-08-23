@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/zinan/docker-dev-farm.svg)](https://travis-ci.org/zinan/docker-dev-farm)
-[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
-
 # Docker Developer Farm
 
 All in one development stack for PHP developers
@@ -19,6 +16,7 @@ If you need more tuning, please change default values in **.env** file
 - PHP 5.6
 - PHP 7.1
 - PHP 7.2
+- PHP 7.3
 - Nginx
 - Apache
 - Nodejs
@@ -27,11 +25,13 @@ If you need more tuning, please change default values in **.env** file
 - Mysql
 - Redis Commander
 - PhpMyAdmin
+- PostgreSql
 
 ### Roadmap
 - Dbeaver CE image
-- PHP 7.3
+- ~~PHP 7.3~~
 - ELK
+- Nginx virtual host manager script
 
 ### Contributing
 This project is under constant development. Feedback and suggestions are

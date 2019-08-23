@@ -53,12 +53,12 @@ echo ""
 
 echo "Building and tagging Docker images..."
 echo ""
-#docker-compose build
+docker-compose build
 echo ""
 echo "Docker images built."
 
 echo "Cleaning up..."
-#docker-compose down &> /dev/null
+docker-compose down &> /dev/null
 
 echo ""
 echo "----------------"

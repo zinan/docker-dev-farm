@@ -1,5 +1,5 @@
 FROM php:7.1-fpm
-MAINTAINER Sinan Turgut <mail@sinanturgut.com.tr>
+LABEL maintainer="Sinan Turgut <mail@sinanturgut.com.tr>"
 
 RUN apt-get update \
     && apt install -y --no-install-recommends nano curl debconf git apt-transport-https apt-utils \

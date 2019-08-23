@@ -1,0 +1,12 @@
+Version 1.0.1
+-------------
+
+* Docker compose version upgrade to 3
+* Php7.3 image added
+* Postgresql image added
+
+
+Version 1.0.0
+-------------
+
+* Initial release

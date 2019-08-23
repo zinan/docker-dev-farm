@@ -1,5 +1,17 @@
-version: "2"
+# docker dev farm
+# https://github.com/zinan/docker-dev-farm
+
+version: "3"
 services:
+
+  x-defaults: &defaults
+    restart: unless-stopped
+
+  php73:
+    build: php7.3
+    container_name: php73
+    volumes:
+      - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
 
   php72:
     build: php7.2
@@ -20,6 +32,7 @@ services:
       - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
 
   nginx:
+    <<: *defaults
     build: nginx
     container_name: nginx
     environment:
@@ -28,10 +41,12 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./log/:/var/log/nginx
     volumes_from:
+      - php73
       - php72
       - php71
       - php56
     links:
+      - php73:php73
       - php72:php72
       - php71:php71
       - php56:php56
@@ -103,3 +118,15 @@ services:
       - ${DEFAULT_NODEJS_PORT}:3000
     volumes:
       - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
+
+  postgresql:
+    build: postgresql
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${GLOBAL_PASSWORD}
+      PGDATA: /data/postgres
+    ports:
+      - ${DEFAULT_POSTGRES_PORT}:5432
+    volumes:
+      - ./data/postgres:/data/postgres
