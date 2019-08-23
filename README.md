@@ -11,6 +11,8 @@ Just clone or download repo and run **install.sh**
 
 If you need more tuning, please change default values in **.env** file
 
+### Adding new project
+After defining your base path for the projects folder and running install.sh, run **vhsetup.sh**, follow the instructions and fill in the blanks ;) 
 
 ### Supported Images
 - PHP 5.6
