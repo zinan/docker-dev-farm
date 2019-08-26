@@ -4,9 +4,6 @@
 version: "3"
 services:
 
-  x-defaults: &defaults
-    restart: unless-stopped
-
   php73:
     build: php7.3
     container_name: php73
@@ -32,7 +29,6 @@ services:
       - ${DEFAULT_PROJECTS_FOLDER}:/var/www/html
 
   nginx:
-    <<: *defaults
     build: nginx
     container_name: nginx
     environment:
@@ -40,11 +36,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./log/:/var/log/nginx
-    volumes_from:
-      - php73
-      - php72
-      - php71
-      - php56
+      - common_data:/var/www/html
     links:
       - php73:php73
       - php72:php72
@@ -130,3 +122,6 @@ services:
       - ${DEFAULT_POSTGRES_PORT}:5432
     volumes:
       - ./data/postgres:/data/postgres
+
+volumes:
+  common_data:
