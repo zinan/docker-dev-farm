@@ -36,7 +36,7 @@ After defining your base path for the projects folder and running install.sh, ru
 - Dbeaver CE image
 - ~~PHP 7.3~~
 - ELK
-- Nginx virtual host manager script
+- ~~Nginx virtual host manager script~~
 
 ### Contributing
 This project is under constant development. Feedback and suggestions are
