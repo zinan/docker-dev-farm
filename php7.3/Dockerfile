@@ -16,9 +16,9 @@ RUN apt-get install -y \
 		xmlrpc \
 		xsl
 # PECL
-RUN pecl install redis-4.0.1 \
-	&& pecl install xdebug-2.6.0 \
-	&& pecl install mongodb-1.5.5 \
+RUN pecl install redis \
+	&& pecl install xdebug \
+	&& pecl install mongodb \
 	&& docker-php-ext-enable redis xdebug mongodb
 
 #docker-php-ext-enable [extension]

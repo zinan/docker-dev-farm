@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/zinan/docker-dev-farm.svg)](https://travis-ci.org/zinan/docker-dev-farm)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+
 # Docker Developer Farm
 
 All in one development stack for PHP developers
