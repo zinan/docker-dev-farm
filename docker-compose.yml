@@ -1,7 +1,7 @@
 # docker dev farm
 # https://github.com/zinan/docker-dev-farm
 
-version: "3"
+version: "2"
 services:
 
   php73:
@@ -36,7 +36,11 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./log/:/var/log/nginx
-      - common_data:/var/www/html
+    volumes_from:
+      - php73
+      - php72
+      - php71
+      - php56
     links:
       - php73:php73
       - php72:php72
@@ -122,6 +126,3 @@ services:
       - ${DEFAULT_POSTGRES_PORT}:5432
     volumes:
       - ./data/postgres:/data/postgres
-
-volumes:
-  common_data:
