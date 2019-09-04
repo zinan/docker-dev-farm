@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://php56:9000/var/www/html/sampledocumentroot/$1
+    DirectoryIndex /index.php index.php
+	ServerName samplehost.localhost;
+	DocumentRoot /var/www/html/sampledocumentroot
+	LogLevel info
+	<Directory /var/www/html/sampledocumentroot>
+        DirectoryIndex index.php
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+     </Directory>
+</VirtualHost>
