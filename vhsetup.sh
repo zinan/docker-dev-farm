@@ -45,8 +45,22 @@ else
 fi
 
 
-
 echo "$TEMPLATE" > "nginx/conf.d/$HOSTNAME.conf"
 echo ""
 echo "New virtual host has been created!"
 echo ""
+
+
+echo "Would you like to add $HOSTNAME to /etc/hosts? "
+echo "[y/n]"
+read WRITETOHOSTS
+if [[ $WRITETOHOSTS == y* ]]; then
+    sudo -k
+    if sudo true; then
+        echo "127.0.0.1  $HOSTNAME" >> /etc/hosts
+        echo "$HOSTNAME added to /etc/hosts"
+    else
+        echo "Access denied you do not have sufficient privileges!"
+        exit 1
+    fi
+fi
