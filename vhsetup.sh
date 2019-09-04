@@ -57,7 +57,8 @@ read WRITETOHOSTS
 if [[ $WRITETOHOSTS == y* ]]; then
     sudo -k
     if sudo true; then
-        echo "127.0.0.1  $HOSTNAME" >> /etc/hosts
+        # sudo sh -c echo "127.0.0.1  $HOSTNAME" >> /etc/hosts
+        echo "\n127.0.0.1  $HOSTNAME" |  sudo tee -a /etc/hosts > /dev/null
         echo "$HOSTNAME added to /etc/hosts"
     else
         echo "Access denied you do not have sufficient privileges!"
