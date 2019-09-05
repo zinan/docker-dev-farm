@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y nano unzip wget curl
 
 RUN apt-get update && apt-get install -y apache2 && apt-get clean
 
-RUN a2enmod proxy_http && a2enmod rewrite
+RUN a2enmod proxy_http && a2enmod rewrite && a2enmod proxy_fcgi
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
