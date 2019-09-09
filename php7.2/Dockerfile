@@ -1,46 +1,27 @@
-FROM php:7.2-fpm
-LABEL maintainer="Sinan Turgut <mail@sinanturgut.com.tr>"
+FROM php:7.2-fpm-alpine
 
-RUN apt-get update \
-    && apt install -y --no-install-recommends nano curl debconf git apt-transport-https apt-utils \
-    build-essential locales acl mailutils wget zip unzip
+ARG XDEBUG_HOST="127.0.0.1"
+ARG XDEBUG_PORT=9001
 
-RUN apt-get install -y libpq-dev \
-    && docker-php-ext-install mbstring bcmath pdo pdo_pgsql pdo_mysql
+RUN apk add --no-cache --update --virtual buildDeps libcurl curl curl-dev autoconf gcc make g++ zlib-dev libzip-dev postgresql-dev libxml2-dev libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev gd icu-dev libxslt libxslt-dev libmemcached libmemcached-dev
 
-RUN apt-get install -y \
-	libxml2-dev \
-	libxslt-dev \
-	&& docker-php-ext-install -j$(nproc) \
-		dom \
-		xmlrpc \
-		xsl
-# PECL
-RUN pecl install redis-4.0.1 \
-	&& pecl install xdebug-2.6.0 \
-	&& pecl install mongodb-1.5.5 \
-	&& docker-php-ext-enable redis xdebug mongodb
-
-#docker-php-ext-enable [extension]
-
-RUN apt install -y libgmp-dev \
-	&& ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
-	&& docker-php-ext-install -j$(nproc) \
-		gmp \
-		bcmath
-
-RUN docker-php-ext-install -j$(nproc) \
-	soap \
-	sockets \
-	calendar \
-	sysvmsg \
-	sysvsem \
-	sysvshm
+RUN docker-php-ext-install mbstring curl zip mysqli pdo pdo_pgsql pdo_mysql soap bcmath
 
 
-#RUN pecl install -o -f redis && rm -rf /tmp/pear && docker-php-ext-enable redis
+RUN pecl install xdebug redis-4.0.1 mongodb
+RUN docker-php-ext-enable redis xdebug mongodb
+RUN apk del buildDeps
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 && composer --version
 
-# RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
+RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+   && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/xdebug.ini &&\
+   echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/xdebug.ini &&\
+   echo "xdebug.remote_handler = dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini &&\
+   echo "xdebug.remote_mode = req" >> /usr/local/etc/php/conf.d/xdebug.ini &&\
+   echo "xdebug.idekey='PHPSTORM'" >> /usr/local/etc/php/conf.d/xdebug.ini &&\
+   echo "xdebug.remote_host=${XDEBUG_HOST}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini &&\
+   echo "xdebug.remote_port=${XDEBUG_PORT}" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+EXPOSE 9000
