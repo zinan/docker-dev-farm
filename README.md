@@ -33,10 +33,11 @@ After defining your base path for the projects folder and running install.sh, ru
 - PostgreSql
 
 ### Roadmap
-- Dbeaver CE image
 - ~~PHP 7.3~~
 - ELK
 - ~~Nginx virtual host manager script~~
+- RabbitMQ
+- Memcached
 
 ### Contributing
 This project is under constant development. Feedback and suggestions are
